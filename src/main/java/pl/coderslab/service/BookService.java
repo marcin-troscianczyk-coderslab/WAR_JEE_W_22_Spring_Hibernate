@@ -2,57 +2,57 @@ package pl.coderslab.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.coderslab.dao.BookDao;
 import pl.coderslab.entity.Author;
 import pl.coderslab.entity.Book;
 import pl.coderslab.entity.Publisher;
+import pl.coderslab.repository.BookRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class BookService {
 
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
 
-    public BookService(BookDao bookDao) {
-        this.bookDao = bookDao;
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public void save(Book book) {
-        bookDao.save(book);
+        bookRepository.save(book);
     }
 
-    public Book findById(Long id) {
-        return bookDao.findById(id);
+    public Optional<Book> findById(Long id) {
+        return bookRepository.findById(id);
     }
 
     public List<Book> findAll() {
-        return bookDao.findAll();
+        return bookRepository.findAll();
     }
 
     public void update(Book book) {
-        bookDao.update(book);
+        bookRepository.save(book);
     }
 
     public void deleteById(Long id) {
-        Book book = bookDao.findById(id);
-        bookDao.delete(book);
+        bookRepository.deleteById(id);
     }
 
     public List<Book> findAllByRating(int rating) {
-        return bookDao.findAllByRating(rating);
+        return bookRepository.findAllByRating(rating);
     }
 
     public List<Book> findAllByPublisherIsNotNull() {
-        return bookDao.findAllByPublisherIsNotNull();
+        return bookRepository.findAllByPublisherIsNotNull();
     }
 
     public List<Book> findAllByPublisher(Publisher publisher) {
-        return bookDao.findAllByPublisher(publisher);
+        return bookRepository.findAllByPublisher(publisher);
     }
 
     public List<Book> findAllByAuthor(Author author) {
-        return bookDao.findAllByAuthor(author);
+        return bookRepository.findAllByAuthors(author);
     }
 }

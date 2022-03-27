@@ -9,6 +9,7 @@ import pl.coderslab.service.PublisherService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,9 +43,9 @@ class BookController {
     @GetMapping(path = "/book/{id}")
     String findById(@PathVariable Long id) {
 
-        Book book = bookService.findById(id);
+        Optional<Book> book = bookService.findById(id);
 
-        return Objects.nonNull(book) ? book.toString() : "Nie znaleziono książki o podanym id " + id;
+        return book.isPresent() ? book.get().toString() : "Nie znaleziono książki o podanym id " + id;
     }
 
     @GetMapping(path = "/books", params = "!rating")
@@ -60,13 +61,18 @@ class BookController {
     @PutMapping(path = "/book/{id}")
     void update(@PathVariable Long id, @RequestParam String title, @RequestParam int rating, @RequestParam String description) {
 
-        Book book = bookService.findById(id);
+        Optional<Book> obook = bookService.findById(id);
 
-        book.setTitle(title);
-        book.setRating(rating);
-        book.setDescription(description);
+        if (obook.isPresent()) {
 
-        bookService.update(book);
+            Book book = obook.get();
+
+            book.setTitle(title);
+            book.setRating(rating);
+            book.setDescription(description);
+
+            bookService.update(book);
+        }
     }
 
     @DeleteMapping(path = "/book/{id}")

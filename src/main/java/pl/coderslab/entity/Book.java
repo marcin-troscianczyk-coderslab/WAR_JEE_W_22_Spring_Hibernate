@@ -1,6 +1,7 @@
 package pl.coderslab.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +13,28 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(min = 5)
     private String title;
 
+    @Min(1)
+    @Max(10)
     private int rating;
 
+    @Size(max = 600)
     private String description;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_publisher")
     private Publisher publisher;
 
+    @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Author> authors = new ArrayList<>();
+
+    @Min(value = 1)
+    private int pages;
 
     public Long getId() {
         return id;
@@ -73,6 +84,14 @@ public class Book {
         this.authors = authors;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -80,6 +99,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", rating=" + rating +
                 ", description='" + description + '\'' +
+                ", pages=" + pages +
                 '}';
     }
 }
