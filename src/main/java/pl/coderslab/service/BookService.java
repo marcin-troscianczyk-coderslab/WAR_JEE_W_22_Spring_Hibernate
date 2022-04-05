@@ -1,9 +1,11 @@
 package pl.coderslab.service;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.entity.Author;
 import pl.coderslab.entity.Book;
+import pl.coderslab.entity.Category;
 import pl.coderslab.entity.Publisher;
 import pl.coderslab.repository.BookRepository;
 
@@ -54,5 +56,17 @@ public class BookService {
 
     public List<Book> findAllByAuthor(Author author) {
         return bookRepository.findAllByAuthors(author);
+    }
+
+    public List<Book> findAllByTitleUsingQuery(String title) {
+        return bookRepository.findAllByTitleUsingQuery(title);
+    }
+
+    public List<Book> findAllByCategoryUsingQuery(Category category) {
+        return bookRepository.findAllByCategoryUsingQuery(category);
+    }
+
+    public List<Book> findAllByRatingBetween(int start, int stop) {
+        return bookRepository.findAllByRatingBetween(start, stop);
     }
 }

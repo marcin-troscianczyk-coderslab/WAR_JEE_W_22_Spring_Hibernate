@@ -3,15 +3,14 @@ package pl.coderslab.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Author;
 import pl.coderslab.entity.Book;
+import pl.coderslab.entity.Category;
 import pl.coderslab.entity.Publisher;
 import pl.coderslab.service.AuthorService;
 import pl.coderslab.service.BookService;
+import pl.coderslab.service.CategoryService;
 import pl.coderslab.service.PublisherService;
 
 import javax.validation.Valid;
@@ -24,12 +23,14 @@ class BookFormController {
 
     private final PublisherService publisherService;
     private final AuthorService authorService;
+    private final CategoryService categoryService;
 
     private final BookService bookService;
 
-    public BookFormController(PublisherService publisherService, AuthorService authorService, BookService bookService) {
+    public BookFormController(PublisherService publisherService, AuthorService authorService, CategoryService categoryService, BookService bookService) {
         this.publisherService = publisherService;
         this.authorService = authorService;
+        this.categoryService = categoryService;
         this.bookService = bookService;
     }
 
@@ -85,5 +86,29 @@ class BookFormController {
     @ModelAttribute("authors")
     Collection<Author> findAllAuthors() {
         return authorService.findAll();
+    }
+
+    @ModelAttribute("categories")
+    Collection<Category> findAllCategory() {
+        return categoryService.findAll();
+    }
+
+    // http://localhost:8080/form/book/search/title?title=1
+    @GetMapping(path = "/form/book/search/title")
+    @ResponseBody
+    String findAllByTitleUsingQuery(@RequestParam String title) {
+        return bookService.findAllByTitleUsingQuery(title).toString();
+    }
+
+    // http://localhost:8080/form/book/search/category?id=1
+    @GetMapping(path = "/form/book/search/category")
+    @ResponseBody
+    String findAllByCategoryUsingQuery(Category category) {
+        return bookService.findAllByCategoryUsingQuery(category).toString();
+    }
+
+    @GetMapping(path = "/form/book/search/rating")
+    public List<Book> findAllByRatingBetween(@RequestParam int start, @RequestParam int stop) {
+        return bookService.findAllByRatingBetween(start, stop);
     }
 }

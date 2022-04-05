@@ -27,6 +27,8 @@
                 <span>Publisher: <form:select path="publisher" items="${publishers}" itemLabel="name" itemValue="id"/></span>
                 <span>Authors: <form:select path="authors" items="${authors}" itemLabel="name" itemValue="id"/></span>
                 <span>Pages: <form:input path="pages"/></span>
+                <span>Category: <form:select path="category" items="${categories}" itemLabel="name"
+                                             itemValue="id"/></span><form:errors path="category" cssClass="error"/>
             </div>
             <form:hidden path="id"/>
             <input type="submit" value="Save changes">

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import pl.coderslab.converter.StringToAuthorConverter;
+import pl.coderslab.converter.StringToCategoryConverter;
 import pl.coderslab.converter.StringToPublisherConverter;
 
 import javax.persistence.EntityManagerFactory;
@@ -59,5 +60,6 @@ public class AppConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToPublisherConverter());
         registry.addConverter(new StringToAuthorConverter());
+        registry.addConverter(new StringToCategoryConverter());
     }
 }
